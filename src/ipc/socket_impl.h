@@ -29,8 +29,6 @@ public slots:
 
     void disconect_from_host( );
 
-    void on_ssl_errors( const QList< QSslError >& errors );
-
     void send_message( const proto::Message& message );
 
     void on_ready_read( );
@@ -41,10 +39,9 @@ signals:
     void connected( );
     void disconnected( QAbstractSocket::SocketError error, const QString& errorString );
     void message_received( const proto::Message& message );
+    void connection_failed( );
 
 private:
     QTcpSocket* m_socket;
     Socket* m_error_handler;
-    QByteArray m_recv_buffer;
-    std::vector< char > m_send_buffer;
 };

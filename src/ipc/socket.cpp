@@ -4,11 +4,9 @@
 #include "message_dispatcher.h"
 #include "socket.h"
 #include "socket_impl.h"
-#include "src/Logger.hpp"
+#include "src/logging/logger.h"
 
-Socket::~Socket( )
-{
-}
+Socket::~Socket( ) = default;
 
 Socket::Socket( SocketErrorHandler&& errorHandler, MessageDispatcher& dispatcher )
     : m_socket_impl( new SocketImpl( this ) )
@@ -32,6 +30,9 @@ Socket::Socket( SocketErrorHandler&& errorHandler, MessageDispatcher& dispatcher
                       this,
                       &Socket::on_message_received,
                       Qt::QueuedConnection );
+
+    QObject::connect(
+            m_socket_impl, &SocketImpl::connection_failed, this, &Socket::connect_to_host_again );
 
     thread->start( );
     qRegisterMetaType< proto::Message >( "proto::Message" );
@@ -108,4 +109,10 @@ void
 Socket::connected( )
 {
     Logger( ) << "Connected.";
+}
+
+void
+Socket::connect_to_host_again( )
+{
+    connect_to_host( m_host_name, m_port );
 }

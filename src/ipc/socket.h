@@ -47,6 +47,8 @@ public slots:
     /// Emitted when the socket connnected
     void connected( );
 
+    void connect_to_host_again( );
+
 signals:
     /// Emitted when the socket disconnected
     void disconnected( QAbstractSocket::SocketError error, const QString& errorString );
