@@ -27,11 +27,6 @@ public:
     void
     process( const proto::Message& query ) override
     {
-//        Query t_query;
-//        if ( !t_query.ParseFromString( query.data( ) ) )
-//        {
-//            throw std::runtime_error( "Failed to parse query: " + query.ShortDebugString( ) );
-//        }
 
         do_processing( query );
     }
@@ -40,10 +35,10 @@ private:
     virtual void do_processing( const Query& query ) = 0;
 };
 
-using MessageProcessorBasePtr = std::shared_ptr< MessageProcessorBase >;
 
 class MessageDispatcher
 {
+    using MessageProcessorBasePtr = std::shared_ptr< MessageProcessorBase >;
     using DispatcherImplType = std::map< int64_t, MessageProcessorBasePtr >;
 
 public:

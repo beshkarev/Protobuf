@@ -1,7 +1,6 @@
 #pragma once
 
 #include <QAbstractSocket>
-#include <QObject>
 #include <functional>
 
 class QSslError;

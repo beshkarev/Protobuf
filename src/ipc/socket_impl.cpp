@@ -1,5 +1,3 @@
-#include <QSslError>
-#include <QSslSocket>
 #include <QTcpSocket>
 #include <cassert>
 #include "Message.pb.h"
@@ -9,7 +7,7 @@
 
 SocketImpl::SocketImpl( Socket* errorHandler, QObject* parent )
     : QObject( parent )
-    , m_socket( new QSslSocket( this ) )
+    , m_socket( new QTcpSocket( this ) )
     , m_error_handler( errorHandler )
 {
     QObject::connect( m_socket, &QTcpSocket::connected, this, &SocketImpl::connected );
@@ -32,7 +30,7 @@ SocketImpl::connect_to_host( const QString& hostname, int port )
 
     if ( !m_socket->waitForConnected( ) )
     {
-        Logger( ) << "Connection failed.";
+        Logger( ) << "Connection failed. Retry connection.";
         emit connection_failed( );
     }
 }

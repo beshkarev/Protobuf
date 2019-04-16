@@ -1,12 +1,8 @@
 #pragma once
 
 #include <QAbstractSocket>
-#include <QObject>
 
 class Socket;
-class QSslSocket;
-class QSslError;
-class QTcpSocket;
 class QTcpSocket;
 
 namespace proto
@@ -14,8 +10,7 @@ namespace proto
 class Message;
 }
 
-///// This class wraps a QSslSocket and it's meant to run in its own
-///// thread
+///// This class wraps a QSslSocket and it's meant to run in its own thread
 class SocketImpl : public QObject
 {
     Q_OBJECT

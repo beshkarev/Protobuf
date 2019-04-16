@@ -9,8 +9,7 @@ EditorDispatcher::EditorDispatcher( MainWindow& dispatcher )
 int64_t
 EditorDispatcher::id( ) const
 {
-    std::hash< std::string > hasher;
-    return hasher( "editor" );
+    return MessageDispatcher::generate_id( "editor" );
 }
 
 void
