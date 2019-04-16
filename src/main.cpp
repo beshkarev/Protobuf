@@ -1,6 +1,6 @@
 #include <QApplication>
-#include "Logger.hpp"
 #include "MemoryWorker.h"
+#include "logging/logger.h"
 #include "mainwindow.h"
 #include "src/ipc/tcp_server.h"
 

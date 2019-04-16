@@ -1,7 +1,7 @@
 #include <QSslError>
 #include <QTcpSocket>
 #include <QWidget>
-#include "Logger.hpp"
+#include "src/logging/logger.h"
 #include "mainwindow.h"
 #include "src/configuration.hpp"
 #include "src/ipc/dispatchers/editor_dispatcher.h"
@@ -97,9 +97,9 @@ MainWindow::send_message( )
         return;
     }
 
-    if ( !m_socket )
+    if ( !m_server_socket )
     {
-        Logger( ) << "Socket is nullptr.";
+        Logger( ) << "Server Socket is nullptr.";
         return;
     }
 

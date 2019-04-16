@@ -4,7 +4,7 @@
 #include <fstream>
 #include <iomanip>
 #include <nlohmann/json.hpp>
-#include "src/Logger.hpp"
+#include "src/logging/logger.h"
 
 namespace ConfigKey
 {

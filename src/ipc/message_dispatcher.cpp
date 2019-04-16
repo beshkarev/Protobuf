@@ -1,6 +1,6 @@
 #include <stdexcept>
 #include "message_dispatcher.h"
-#include "src/Logger.hpp"
+#include "src/logging/logger.h"
 
 void
 MessageDispatcher::add_processor( MessageProcessorBasePtr processor )
