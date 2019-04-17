@@ -38,8 +38,12 @@ private slots:
     void
     flush( )
     {
+        named_mutex.lock( );
+
         file.flush( );
         file.clear( );
+
+        named_mutex.unlock( );
     }
 
     void

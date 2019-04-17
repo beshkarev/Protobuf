@@ -1,7 +1,19 @@
-#include "file_worker.hpp"
 #include "logger.h"
+#include "file_worker.hpp"
 
 std::unique_ptr< FileWorker > Logger::m_worker( new FileWorker );
+
+Logger::Logger( )
+{
+    m_worker->get_mutex( ).lock( );
+    write( "[" + std::to_string( get_timestamp( ) ) + "] " );
+}
+
+Logger::~Logger( )
+{
+    write( "\n" );
+    m_worker->get_mutex( ).unlock( );
+}
 
 uint64_t
 Logger::get_timestamp( ) const
@@ -11,12 +23,7 @@ Logger::get_timestamp( ) const
 }
 
 void
-Logger::write( const std::string& ss )
+Logger::write( const std::string& log )
 {
-    auto& named_mutex = m_worker->get_mutex( );
-
-    named_mutex.lock( );
-    m_worker->get_ofstream( ) << "[" << std::to_string( get_timestamp( ) ) << "] " << ss
-                              << std::endl;
-    named_mutex.unlock( );
+    m_worker->get_ofstream( ) << log;
 }

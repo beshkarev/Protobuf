@@ -9,6 +9,10 @@ class FileWorker;
 class Logger
 {
 public:
+    Logger( );
+
+    ~Logger( );
+
     Logger&
     operator<<( const std::string& str )
     {
