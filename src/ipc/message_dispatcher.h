@@ -20,19 +20,19 @@ public:
     virtual void process( const proto::Message& query ) = 0;
 };
 
-template < typename Query >
+template < typename Message >
 class ProtoMessageProcessor : public MessageProcessorBase
 {
 public:
     void
-    process( const proto::Message& query ) override
+    process( const Message& query ) override
     {
 
         do_processing( query );
     }
 
 private:
-    virtual void do_processing( const Query& query ) = 0;
+    virtual void do_processing( const Message& query ) = 0;
 };
 
 
