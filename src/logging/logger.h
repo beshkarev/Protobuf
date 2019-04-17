@@ -9,11 +9,11 @@ class FileWorker;
 class Logger
 {
 public:
-    friend Logger&
-    operator<<( Logger&& logger, const std::string& ss )
+    Logger&
+    operator<<( const std::string& str )
     {
-        logger.write( ss );
-        return logger;
+        write( str );
+        return *this;
     }
 
 private:
