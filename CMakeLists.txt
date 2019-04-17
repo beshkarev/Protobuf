@@ -55,12 +55,16 @@ set ( UIS
  UI/mainwindow.ui
 )
 
+set ( RESOURCES
+ resources/resources.qrc
+)
+
 qt5_wrap_ui( UI_HEADERS ${UIS} )
 
 set(PROJECT_SRCS ${SOURCES})
 set(PROJECT_HDRS ${HEADERS})
 
 protobuf_generate_cpp(PROTO_SRCS PROTO_HDRS ${ProtoFiles})
-add_executable(${PROJECT_NAME} ${PROJECT_SRCS} ${UI_HEADERS} ${PROJECT_HDRS} ${PROTO_SRCS} ${PROTO_HDRS})
+add_executable(${PROJECT_NAME} ${PROJECT_SRCS} ${UI_HEADERS} ${PROJECT_HDRS} ${PROTO_SRCS} ${PROTO_HDRS} ${RESOURCES})
 set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD 11)
 target_link_libraries(${PROJECT_NAME} Qt5::Core Qt5::Network Qt5::Widgets ${PROTOBUF_LIBS} -lpthread)
