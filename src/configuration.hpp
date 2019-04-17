@@ -1,9 +1,10 @@
 #pragma once
 
 #include <QDir>
+#include <QJsonDocument>
+#include <QJsonObject>
 #include <fstream>
 #include <iomanip>
-#include <nlohmann/json.hpp>
 #include "src/logging/logger.h"
 
 namespace ConfigKey
@@ -19,19 +20,20 @@ class Configuration
 public:
     Configuration( )
     {
-        std::ifstream input(
-                ( QDir::currentPath( ) + "/" + ConfigKey::CONFIG_NAME ).toStdString( ) );
-        input >> m_config;
-        input.close( );
+        auto json_doc = read( );
+        if ( json_doc.isObject( ) )
+        {
+            m_config = json_doc.object( );
+        }
     }
 
-    uint32_t
+    uint16_t
     get_server_port( ) const
     {
         auto it = m_config.find( ConfigKey::SERVER_PORT );
         if ( it != m_config.end( ) )
         {
-            return it->get< uint32_t >( );
+            return static_cast< uint16_t >( it->toInt( ) );
         }
 
         Logger( ) << "Couldn't find server port.";
@@ -44,20 +46,20 @@ public:
         auto it = m_config.find( ConfigKey::HOST_NAME );
         if ( it != m_config.end( ) )
         {
-            return QString::fromStdString( it->get< std::string >( ) );
+            return it->toString( );
         }
 
         Logger( ) << "Couldn't find host name.";
         return QString{};
     }
 
-    uint32_t
+    uint16_t
     get_client_port( ) const
     {
         auto it = m_config.find( ConfigKey::CLIENT_PORT );
         if ( it != m_config.end( ) )
         {
-            return it->get< std::uint32_t >( );
+            return static_cast< uint16_t >( it->toInt( ) );
         }
 
         Logger( ) << "Couldn't find client port.";
@@ -65,5 +67,16 @@ public:
     }
 
 private:
-    nlohmann::json m_config;
+    QJsonDocument
+    read( )
+    {
+        auto path = QDir::currentPath( ) + "/" + ConfigKey::CONFIG_NAME;
+        Logger( ) << "Read config by the path " << path.toStdString( );
+
+        QFile jsonFile( path );
+        jsonFile.open( QFile::ReadOnly );
+        return QJsonDocument( ).fromJson( jsonFile.readAll( ) );
+    }
+
+    QJsonObject m_config;
 };

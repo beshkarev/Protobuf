@@ -2,11 +2,12 @@ cmake_minimum_required(VERSION 3.8)
 
 project(Protobuf)
 
-find_package(Protobuf REQUIRED)
+include(FindProtobuf)
+
+find_package(Protobuf 3.5 REQUIRED)
 find_package(Qt5Core REQUIRED)
 find_package(Qt5Network REQUIRED)
 find_package(Qt5Widgets)
-find_package(nlohmann_json 3.2.0 REQUIRED)
 find_package(Boost 1.40 REQUIRED)
 
 include_directories(${PROTOBUF_INCLUDE_DIRS})
@@ -15,6 +16,8 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR})
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
+
+set(PROTOBUF_LIBS /usr/local/lib/libprotobuf.a)
 
 set (ProtoFiles
   proto/Message.proto
@@ -60,4 +63,4 @@ set(PROJECT_HDRS ${HEADERS})
 protobuf_generate_cpp(PROTO_SRCS PROTO_HDRS ${ProtoFiles})
 add_executable(${PROJECT_NAME} ${PROJECT_SRCS} ${UI_HEADERS} ${PROJECT_HDRS} ${PROTO_SRCS} ${PROTO_HDRS})
 set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD 11)
-target_link_libraries(${PROJECT_NAME} Qt5::Core Qt5::Network Qt5::Widgets ${PROTOBUF_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} Qt5::Core Qt5::Network Qt5::Widgets ${PROTOBUF_LIBS} -lpthread)
