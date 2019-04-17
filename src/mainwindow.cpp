@@ -1,20 +1,20 @@
+#include "mainwindow.h"
 #include <QSslError>
 #include <QTcpSocket>
 #include <QWidget>
-#include "src/logging/logger.h"
-#include "mainwindow.h"
 #include "src/configuration.hpp"
 #include "src/ipc/dispatchers/editor_dispatcher.h"
 #include "src/ipc/dispatchers/server_dispatcher.h"
 #include "src/ipc/message_dispatcher.h"
 #include "src/ipc/socket.h"
 #include "src/ipc/tcp_server.h"
+#include "src/logging/logger.h"
 #include "ui_mainwindow.h"
 
 MainWindow::MainWindow( QWidget* parent )
     : QMainWindow( parent )
     , ui( new Ui::MainWindow )
-    , m_config( new Configuration( ) )
+    , m_config( new Configuration )
     , m_dispatcher( new MessageDispatcher )
     , m_socket( new Socket( [&]( const QSslError& error ) { return on_ssl_error( error ); },
                             *m_dispatcher ) )
@@ -22,8 +22,11 @@ MainWindow::MainWindow( QWidget* parent )
               m_config->get_host_name( ), m_config->get_server_port( ), *m_dispatcher ) )
 {
     ui->setupUi( this );
-
     setFixedSize( size( ) );
+
+    ui->label->setTextFormat( Qt::RichText );
+    ui->label->setText(
+            "<img src=\":/new/icons/offline.png\" width=\"10\" height=\"10\">  Offline!" );
 
     QObject::connect( ui->send_button, &QPushButton::released, this, &MainWindow::send_message );
 }
@@ -79,11 +82,26 @@ MainWindow::on_text_editor_updated( const std::string& text )
 }
 
 void
-MainWindow::on_new_server_connection( )
+MainWindow::on_conectivity_changed( bool online )
 {
-    auto socket = m_server->get_socket( );
+    if ( online )
+    {
+        auto socket = m_server->get_socket( );
+        m_server_socket.reset( new Socket( socket, *m_dispatcher ) );
+        m_config->set_connectivity( Configuration::Connectivity::OFFLINE );
 
-    m_server_socket.reset( new Socket( socket, *m_dispatcher ) );
+        ui->label->setText(
+                "<img src=\":/new/icons/online.png\" width=\"10\" height=\"10\">  "
+                "Online!" );
+    }
+    else
+    {
+        m_server.reset( );
+        m_config->set_connectivity( Configuration::Connectivity::OFFLINE );
+
+        ui->label->setText(
+                "<img src=\":/new/icons/offline.png\" width=\"10\" height=\"10\">  Offline!" );
+    }
 }
 
 void

@@ -1,8 +1,8 @@
+#include "socket.h"
 #include <QSslSocket>
 #include <QThread>
 #include "Message.pb.h"
 #include "message_dispatcher.h"
-#include "socket.h"
 #include "socket_impl.h"
 #include "src/logging/logger.h"
 
@@ -115,4 +115,13 @@ void
 Socket::connect_to_host_again( )
 {
     connect_to_host( m_host_name, m_port );
+}
+
+void
+Socket::disconnected( )
+{
+    proto::Message message;
+    message.set_id( MessageDispatcher::generate_id( "server" ) );
+    message.set_data( "0" );
+    m_dispatcher.dispatch( message );
 }

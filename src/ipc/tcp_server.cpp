@@ -1,6 +1,6 @@
+#include "tcp_server.h"
 #include "Message.pb.h"
 #include "src/ipc/message_dispatcher.h"
-#include "tcp_server.h"
 
 TcpServer::TcpServer( const QString& host, uint32_t port, MessageDispatcher& dispatcher )
     : m_host( host )
@@ -28,6 +28,7 @@ TcpServer::on_new_connection( )
 {
     proto::Message message;
     message.set_id( MessageDispatcher::generate_id( "server" ) );
+    message.set_data( "1" );
 
     m_dispatcher.dispatch( message );
 }

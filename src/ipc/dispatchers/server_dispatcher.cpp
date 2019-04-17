@@ -1,5 +1,5 @@
-#include "../message_dispatcher.h"
 #include "server_dispatcher.h"
+#include "../message_dispatcher.h"
 #include "src/mainwindow.h"
 
 ServerDispatcher::ServerDispatcher( MainWindow& dispatcher )
@@ -16,5 +16,6 @@ ServerDispatcher::id( ) const
 void
 ServerDispatcher::do_processing( const proto::Message& message )
 {
-    m_dispatcher.on_new_server_connection( );
+    bool online = std::stoi( message.data( ) );
+    m_dispatcher.on_conectivity_changed( online );
 }

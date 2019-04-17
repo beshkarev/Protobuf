@@ -20,21 +20,19 @@ public:
     virtual void process( const proto::Message& query ) = 0;
 };
 
-template < typename Message >
+template < typename MessageT >
 class ProtoMessageProcessor : public MessageProcessorBase
 {
 public:
     void
-    process( const Message& query ) override
+    process( const proto::Message& query ) override
     {
-
         do_processing( query );
     }
 
 private:
-    virtual void do_processing( const Message& query ) = 0;
+    virtual void do_processing( const MessageT& query ) = 0;
 };
-
 
 class MessageDispatcher
 {
@@ -50,7 +48,7 @@ public:
 
     const DispatcherImplType& impl( ) const;
 
-    static int64_t generate_id(const std::string &data);
+    static int64_t generate_id( const std::string& data );
 
 private:
     DispatcherImplType mImpl;

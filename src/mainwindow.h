@@ -26,7 +26,7 @@ public:
 
     void on_text_editor_updated( const std::string& text );
 
-    void on_new_server_connection( );
+    void on_conectivity_changed( bool mode );
 
 private slots:
     void send_message( );

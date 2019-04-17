@@ -18,6 +18,12 @@ constexpr const char* CONFIG_NAME = "ProtobufConfig.json";
 class Configuration
 {
 public:
+    enum class Connectivity
+    {
+        ONLINE,
+        OFFLINE
+    };
+
     Configuration( )
     {
         auto json_doc = read( );
@@ -66,6 +72,18 @@ public:
         return 0u;
     }
 
+    void
+    set_connectivity( Connectivity mode )
+    {
+        m_conectivity_mode = mode;
+    }
+
+    Connectivity
+    get_connectivity( )
+    {
+        return m_conectivity_mode;
+    }
+
 private:
     QJsonDocument
     read( )
@@ -79,4 +97,5 @@ private:
     }
 
     QJsonObject m_config;
+    Connectivity m_conectivity_mode;
 };

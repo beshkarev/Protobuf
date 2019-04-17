@@ -48,12 +48,7 @@ public slots:
 
     void connect_to_host_again( );
 
-signals:
-    /// Emitted when the socket disconnected
-    void disconnected( QAbstractSocket::SocketError error, const QString& errorString );
-
-    /// Emitted when a new message is received
-    void message_received( const proto::Message& message );
+    void disconnected( );
 
 private:
     SocketErrorHandler m_error_handler;
