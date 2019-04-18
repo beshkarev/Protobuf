@@ -9,7 +9,8 @@
 
 namespace ConfigKey
 {
-constexpr const char* HOST_NAME = "hostname";
+constexpr const char* SERVER_HOST_NAME = "server_hostname";
+constexpr const char* CLIENT_HOST_NAME = "client_hostname";
 constexpr const char* SERVER_PORT = "server_port";
 constexpr const char* CLIENT_PORT = "client_port";
 constexpr const char* CONFIG_NAME = "ProtobufConfig.json";
@@ -47,15 +48,28 @@ public:
     }
 
     QString
-    get_host_name( ) const
+    get_server_host_name( ) const
     {
-        auto it = m_config.find( ConfigKey::HOST_NAME );
+        auto it = m_config.find( ConfigKey::SERVER_HOST_NAME );
         if ( it != m_config.end( ) )
         {
             return it->toString( );
         }
 
-        Logger( ) << "Couldn't find host name.";
+        Logger( ) << "Couldn't find server host name.";
+        return QString{};
+    }
+
+    QString
+    get_client_host_name( )
+    {
+        auto it = m_config.find( ConfigKey::CLIENT_HOST_NAME );
+        if ( it != m_config.end( ) )
+        {
+            return it->toString( );
+        }
+
+        Logger( ) << "Couldn't find client host name.";
         return QString{};
     }
 

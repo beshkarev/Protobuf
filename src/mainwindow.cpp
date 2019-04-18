@@ -19,7 +19,7 @@ MainWindow::MainWindow( QWidget* parent )
     , m_socket( new Socket( [&]( const QSslError& error ) { return on_ssl_error( error ); },
                             *m_dispatcher ) )
     , m_server( new TcpServer(
-              m_config->get_host_name( ), m_config->get_server_port( ), *m_dispatcher ) )
+              m_config->get_server_host_name( ), m_config->get_server_port( ), *m_dispatcher ) )
 {
     ui->setupUi( this );
     setFixedSize( size( ) );
@@ -71,9 +71,9 @@ MainWindow::init( )
     m_dispatcher->add_processor( std::make_shared< EditorDispatcher >( *this ) );
     m_dispatcher->add_processor( std::make_shared< ServerDispatcher >( *this ) );
 
-    Logger( ) << "Connect to host " << m_config->get_host_name( ).toStdString( ) << ":"
+    Logger( ) << "Connect to host " << m_config->get_client_host_name( ).toStdString( ) << ":"
               << std::to_string( m_config->get_client_port( ) );
-    m_socket->connect_to_host( m_config->get_host_name( ), m_config->get_client_port( ) );
+    m_socket->connect_to_host( m_config->get_client_host_name( ), m_config->get_client_port( ) );
     m_server->listen( );
 }
 

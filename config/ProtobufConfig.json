@@ -1,5 +1,6 @@
 {
     "client_port": 7777,
-    "hostname": "localhost",
+    "server_hostname": "localhost",
+    "client_hostname": "localhost",
     "server_port": 8888
 }
