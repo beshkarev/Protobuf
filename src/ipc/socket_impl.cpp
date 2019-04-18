@@ -1,8 +1,8 @@
+#include "socket_impl.h"
 #include <QTcpSocket>
 #include <cassert>
 #include "Message.pb.h"
 #include "socket.h"
-#include "socket_impl.h"
 #include "src/logging/logger.h"
 
 SocketImpl::SocketImpl( Socket* errorHandler, QObject* parent )
@@ -25,12 +25,10 @@ SocketImpl::SocketImpl( QTcpSocket* socket )
 void
 SocketImpl::connect_to_host( const QString& hostname, int port )
 {
-    Logger( ) << "Connect to host.";
     m_socket->connectToHost( hostname, port );
 
     if ( !m_socket->waitForConnected( ) )
     {
-        Logger( ) << "Connection failed. Retry connection.";
         emit connection_failed( );
     }
 }
